@@ -4,16 +4,16 @@
 //console.log(data.AREQUIPA["2016-2"].students)
 
 
-//sedee = prompt("cual es tu sede");
-//promocion = prompt("cual es tu promocion");
+sedee = prompt("cual es tu sede");
+promocion = prompt("cual es tu promocion");
 
-//var sede = data[sedee];
-//var generacion = sede[promocion];
+var sede = data[sedee];
+var generacion = sede[promocion];
 // console.log(sede);
 // console.log(generacion);
 // console.log(data.LIMA["2016-2"].students);
 
-
+/*
 const select = document.getElementById('city');
 const periodo = document.getElementById('periodo');
 
@@ -37,11 +37,8 @@ function changeCiudad() {
     periodo.add(option);
   }  
 }
+*/
 
-//  function ClearOptions(country)
-//     {
-//     document.getElementById('periodo').options.length = 0;
-//     }
 
 
 function estuactivos(generacion){
@@ -133,7 +130,7 @@ function porEstuSupePuntos(generacion){
   if((sumaHse/j)>840 && (sumaTech/j) >1260){
     sumaScore++;
   }
-  var porcentaje=parseInt((sumaScore*100)/estuactivos(generacion));
+  var porcentaje=parseInt((sumaScore*100)/generacion.students.length);
  
   }
   return (porcentaje);
@@ -183,10 +180,114 @@ function porSupePuntosTech(generacion){
   if((sumaTech/j) >1260){
     sumaScore++;
   }
-  var porcentaje=parseInt((sumaScore*100)/i);
+  var porcentaje=parseInt((sumaScore*100)/generacion.students.length);
  
   }
   return (porcentaje);
 }
 
 console.log(porSupePuntosTech(generacion)+'%');
+
+//cantidad que representa el total de estudiantes que superan la meta de puntos Hse
+
+function estuSupePuntosHse(generacion){
+  var sumaScore=0;
+  for(var i=0;i<generacion.students.length;i++){
+  var sumaHse=0;
+  
+  
+  for(var j=0;j<generacion.students[i]['sprints'].length;j++){
+    
+    var hse=generacion.students[i]['sprints'][j]['score']['hse'];
+
+    sumaHse+=hse;
+  }
+
+  if((sumaHse/j)>840){
+    sumaScore++;
+  }
+  
+ 
+  }
+  return (sumaScore);
+}
+
+console.log(estuSupePuntosHse(generacion));
+
+//Porcentaje que representa el total de estudiantes que superan la meta de puntos Hse
+
+function porEstuSupePuntosHse(generacion){
+  var sumaScore=0;
+  for(var i=0;i<generacion.students.length;i++){
+  var sumaHse=0;
+  
+  
+  for(var j=0;j<generacion.students[i]['sprints'].length;j++){
+    
+    var hse=generacion.students[i]['sprints'][j]['score']['hse'];
+
+    sumaHse+=hse;
+  }
+
+  if((sumaHse/j)>840){
+    sumaScore++;
+  }
+  var porcentaje=parseInt((sumaScore*100)/generacion.students.length);
+  
+  }
+  return (porcentaje);
+}
+
+console.log(porEstuSupePuntosHse(generacion)+'%');
+
+//console.log(data.LIMA["2016-2"].ratings[0].student);
+
+//Porcentaje de estudiantes satisfechos con el bootcamp
+
+var arrRatings=generacion['ratings'];
+function porEstSatisfechos(generacion){
+//console.log(arrRatings);
+var sumaExpectativa=0;
+for (var i=0;i<arrRatings.length;i++){
+  var studentNoCumple=generacion['ratings'][i]['student']['no-cumple'];
+  var studentCumple=generacion['ratings'][i]['student']['cumple'];
+  var studentSupera=generacion['ratings'][i]['student']['supera'];
+  var Expectativa=((studentCumple+studentSupera)*100/(studentNoCumple+studentCumple+studentSupera))
+  sumaExpectativa+=Expectativa;
+}
+var porcentajeSatisfacion=parseInt((sumaExpectativa)/arrRatings.length);
+
+return porcentajeSatisfacion;
+}
+
+console.log(porEstSatisfechos(generacion)+'%');
+
+//PUNTUACIÓN PROMEDIO DE LOS PROFESORES
+function puntPromedioProfesores(generacion){
+var sumaPromProfe=0;
+
+for(var i=0;i<arrRatings.length;i++){
+  var profe=arrRatings[i]['teacher'];
+  sumaPromProfe+=profe;
+  }
+  var promedio=sumaPromProfe/arrRatings.length;
+
+  return promedio;
+}
+
+console.log(puntPromedioProfesores(generacion));
+
+//PUNTUACIÓN PROMEDIO DE LOS JEDIS
+function puntPromedioJedi(generacion){
+  var sumaPromJedi=0;
+  
+  for(var i=0;i<arrRatings.length;i++){
+    var jedi=arrRatings[i]['jedi'];
+    sumaPromJedi+=jedi;
+    }
+    var promedio=sumaPromJedi/arrRatings.length;
+  
+    return promedio;
+  }
+  
+  console.log(puntPromedioJedi(generacion));
